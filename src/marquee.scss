@@ -1,0 +1,60 @@
+// # Marquee
+
+@mixin jsx-marquee--when-hovered() {
+    .jsx-marquee:hover & {
+        @content;
+    }
+}
+
+@mixin jsx-marquee--center() {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+// [1] HACK for Safari (iOS >= 10.3): Safari renders only the first item. This hack forces
+//     the browser to create a new layer which solves our problem with hidden items.
+.jsx-marquee {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    transform: translateZ(0); // [1]
+    white-space: nowrap;
+}
+
+// ## Content
+.jsx-marquee__content {
+    display: inline-block;
+}
+
+// ## Content
+// ### State: is animated
+// [1] Variable is set on runtime in Marquee.tsx.
+.jsx-marquee__content--is-animated {
+    animation: jsx-marquee--animation var(--jsx-marquee--animation-function) var(--jsx-marquee--animation-time) infinite; // [1]
+
+    @include jsx-marquee--when-hovered() {
+        animation-play-state: paused;
+    }
+}
+
+// ## Content Item
+// @tag <div/>
+// [1] Give the browser a hint that we will change the transform value,
+//     so the browser can setup appropriate optimizations ahead of time before the element is actually changed.
+.jsx-marquee__content-item {
+    display: inline-block;
+    will-change: transform; // [1]
+}
+
+// [1] Variable is set on runtime in Marquee.tsx.
+@keyframes jsx-marquee--animation {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(var(--jsx-marquee--content-width)); // [1]
+    }
+}
