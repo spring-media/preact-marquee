@@ -1,8 +1,8 @@
 # preact-marquee
 
 ![npm version](https://img.shields.io/npm/v/preact-marquee.svg)
-![dependencies](https://img.shields.io/david/preact-marquee.svg)
-![dev dependencies](https://img.shields.io/david/dev/preact-marquee.svg)
+![dependencies](https://img.shields.io/david/spring-media/preact-marquee.svg)
+![dev dependencies](https://img.shields.io/david/dev/spring-media/preact-marquee.svg)
 ![License](https://img.shields.io/npm/l/preact-marquee.svg)
 
 A <marquee> component for Preact.
@@ -52,7 +52,7 @@ The rate (in seconds) at which the content makes one round.
 - Default: `12`
 
 ### startAnimationAfterInMs
- The time after which the animation begins.
+ The time (in milliseconds) after which the animation begins.
 
 - Type: Number
 - Default: `1500`
