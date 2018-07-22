@@ -30,10 +30,18 @@
 
 // ## Content
 // ### State: is animated
-// [1] Variable is set on runtime in Marquee.tsx.
+// Variables are set on runtime in Marquee.tsx.
 .jsx-marquee__content--is-animated {
-    animation: jsx-marquee--animation var(--jsx-marquee--animation-function) var(--jsx-marquee--animation-time) infinite; // [1]
+    animation-name: jsx-marquee--animation;
+    animation-timing-function: var(--jsx-marquee--animation-function);
+    animation-duration: var(--jsx-marquee--animation-time);
+    animation-delay: var(--jsx-marquee--animation-delay);
+    animation-iteration-count: infinite;
+}
 
+// ## Content
+// ### State: pause when hovered
+.jsx-marquee__content--pause-when-hovered {
     @include jsx-marquee--when-hovered() {
         animation-play-state: paused;
     }

@@ -45,17 +45,23 @@ class App extends Component {
 
 ## Props
 
+### pauseWhenHovered
+Should the marquee animation pause when cursor is hovered over?
+
+- Type: Boolean
+- Default: `true`
+
 ### durationInSeconds
 The rate (in seconds) at which the content makes one round.
 
 - Type: Number
 - Default: `12`
 
-### startAnimationAfterInMs
- The time (in milliseconds) after which the animation begins.
+### startAnimationAfterInSeconds
+ The time (in seconds) after which the animation begins.
 
 - Type: Number
-- Default: `1500`
+- Default: `1.5`
 
 ### animationFunction
 The animation function specifies the speed curve of the animation.

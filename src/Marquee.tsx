@@ -2,10 +2,12 @@ import { Component, h } from 'preact';
 import './marquee.scss';
 
 export interface Props {
+    // Should the marquee animation pause when cursor is hovered over?
+    pauseWhenHovered?: boolean;
     // The rate at which the content makes one round.
     durationInSeconds?: number;
     // The time after which the animation begins.
-    startAnimationAfterInMs?: number;
+    startAnimationAfterInSeconds?: number;
     // The animation function specifies the speed curve of the animation.
     animationFunction?: 'linear' | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out';
     // Custom speed configuration for various breakpoints.
@@ -14,6 +16,7 @@ export interface Props {
 
 export interface State {
     copyCount: number;
+    pauseWhenHoveredClassName: string;
     animationClassName: string;
     animationTimeInSeconds: number;
     contentWidth: number;
@@ -28,8 +31,9 @@ export type BreakpointSpeedConfig = {
 
 export class Marquee extends Component<Props, State> {
     public static defaultProps: Props = {
+        pauseWhenHovered: true,
         durationInSeconds: 12,
-        startAnimationAfterInMs: 1500,
+        startAnimationAfterInSeconds: 2,
         animationFunction: 'linear',
         breakpointSpeedConfig: [
             {
@@ -53,7 +57,6 @@ export class Marquee extends Component<Props, State> {
     private marqueeElement: HTMLElement;
     private contentElement: HTMLElement;
     private resizeCallback: () => void;
-    private startAnimationTimeout: number;
     private pageWidth: number;
 
     private static getPageWidth(): number {
@@ -71,6 +74,7 @@ export class Marquee extends Component<Props, State> {
 
         this.setState({
             copyCount: 2,
+            pauseWhenHoveredClassName: '',
             animationClassName: '',
             animationTimeInSeconds: 0,
             contentWidth: 0,
@@ -81,18 +85,18 @@ export class Marquee extends Component<Props, State> {
     public componentDidMount(): void {
         this.setupRuntimeVariables();
         this.startAnimation();
+        this.pauseWhenHovered();
         this.measureRuntimeVariablesAgainIfWindowIsResized();
     }
 
     public componentWillUnmount(): void {
-        clearTimeout(this.startAnimationTimeout);
         window.removeEventListener('resize', this.resizeCallback);
     }
 
     public render(): JSX.Element {
         const cssVariables: string = [
             `--jsx-marquee--animation-function: ${this.props.animationFunction}`,
-            `--jsx-marquee--start-animation-time-in-ms: ${this.props.startAnimationAfterInMs}`,
+            `--jsx-marquee--animation-delay: ${this.props.startAnimationAfterInSeconds}s`,
             `--jsx-marquee--content-width: -${this.state.contentWidth}px`,
             `--jsx-marquee--animation-time: ${this.state.animationTimeInSeconds}s`
         ].join(';');
@@ -100,7 +104,9 @@ export class Marquee extends Component<Props, State> {
         return (
             <div className={'jsx-marquee'} style={cssVariables} ref={this.saveMarqueeReference}>
                 <div
-                    className={`jsx-marquee__content ${this.state.animationClassName}`}
+                    className={`jsx-marquee__content ${this.state.animationClassName} ${
+                        this.state.pauseWhenHoveredClassName
+                    }`}
                     ref={this.saveContentReference}
                 >
                     {this.renderContent(this.state)}
@@ -149,11 +155,17 @@ export class Marquee extends Component<Props, State> {
     }
 
     private startAnimation(): void {
-        this.startAnimationTimeout = setTimeout(() => {
+        this.setState({
+            animationClassName: 'jsx-marquee__content--is-animated'
+        });
+    }
+
+    private pauseWhenHovered(): void {
+        if (this.props.pauseWhenHovered) {
             this.setState({
-                animationClassName: 'jsx-marquee__content--is-animated'
+                pauseWhenHoveredClassName: 'jsx-marquee__content--pause-when-hovered'
             });
-        }, this.props.startAnimationAfterInMs);
+        }
     }
 
     private measureRuntimeVariablesAgainIfWindowIsResized(): void {
