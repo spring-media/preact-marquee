@@ -5,23 +5,31 @@
 ![dev dependencies](https://img.shields.io/david/dev/spring-media/preact-marquee.svg)
 ![License](https://img.shields.io/npm/l/preact-marquee.svg)
 
-A <marquee> component for Preact.
+Preact-Marquee is a marquee component for [Preact](https://preactjs.com/).
+
+In case you don’t know what a marquee is, here is a short description:
+A marquee is generally some content that floats from one side of the screen to the other.
+
+**Features**:
+* High performance
+* Dynamic content
+* Revolver mode
 
 ## Getting Started
 
-Install it via npm or yarn:
-
-```shell
-npm install --save preact-marquee
-```
+Install it via yarn or npm:
 
 ```shell
 yarn add preact-marquee --save
 ```
 
+```shell
+npm install preact-marquee --save
+```
+
 ## Example
 
-```html
+```jsx
 import { Component, h } from 'preact';
 import { Marquee } from './Marquee';
 import './App.css';
