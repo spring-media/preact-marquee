@@ -81,7 +81,7 @@ The animation function specifies the speed curve of the animation.
 Custom speed configuration for various breakpoints.
 
 - Type: BreakpointSpeedConfig
-    ```
+    ```typescript
     type BreakpointSpeedConfig = {
         name: string;
         fromWidth: number;
@@ -123,4 +123,4 @@ yarn build
 
 ## License
 
-MIT
+[MIT](./LICENSE)
