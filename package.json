@@ -1,9 +1,10 @@
 {
   "name": "preact-marquee",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A <marquee> component for Preact.",
   "author": "Adrian Ramin <adrian.ramin@gmail.com>",
-  "main": "dist/marquee.js",
+  "main": "dist/Marquee.js",
+  "types": "dist/Marquee.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -16,7 +16,7 @@ const basePlugins = [
         template: './public/index.html',
         inject: 'body',
         chunks: [
-            'index'
+            'examples'
         ]
     }),
 
@@ -44,8 +44,8 @@ module.exports = {
     mode: process.env.NODE_ENV,
 
     entry: {
-        index: './src/index.tsx',
-        marquee: './src/Marquee.tsx'
+        examples: './src/examples.tsx',
+        Marquee: './src/Marquee.tsx'
     },
 
     output: {
