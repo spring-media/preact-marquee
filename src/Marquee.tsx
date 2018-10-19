@@ -106,7 +106,7 @@ export class Marquee extends Component<Props, State> {
                 <div
                     className={`preact-marquee__content ${this.state.animationClassName} ${
                         this.state.pauseWhenHoveredClassName
-                    }`}
+                        }`}
                     ref={this.saveContentReference}
                 >
                     {this.renderContent(this.state)}
@@ -136,10 +136,10 @@ export class Marquee extends Component<Props, State> {
     private breakpointSpeedFactor(): number {
         // tslint:disable-next-line:no-non-null-assertion
         const multiplier: BreakpointSpeedConfig = this.props.breakpointSpeedConfig
-            .filter((breakpointSpeedConfig: BreakpointSpeedConfig) => {
-                return Marquee.getPageWidth() > breakpointSpeedConfig.fromWidth;
-            })
-            .pop();
+                                                      .filter((breakpointSpeedConfig: BreakpointSpeedConfig) => {
+                                                          return Marquee.getPageWidth() > breakpointSpeedConfig.fromWidth;
+                                                      })
+                                                      .pop();
 
         return multiplier ? 1 / multiplier.speedMultiplier : 1;
     }
@@ -149,7 +149,7 @@ export class Marquee extends Component<Props, State> {
             animationTimeInSeconds: Math.ceil(
                 // tslint:disable-next-line:no-non-null-assertion
                 this.state.contentWidth /
-                    (this.state.containerWidth / (this.props.durationInSeconds * this.breakpointSpeedFactor()))
+                (this.state.containerWidth / (this.props.durationInSeconds * this.breakpointSpeedFactor()))
             )
         });
     }
@@ -170,18 +170,11 @@ export class Marquee extends Component<Props, State> {
 
     private measureRuntimeVariablesAgainIfWindowIsResized(): void {
         this.resizeCallback = (): void => {
-            const pageWidthHasNotChanged: boolean = this.pageWidth === Marquee.getPageWidth();
-            if (pageWidthHasNotChanged) {
-                return;
+            const pageWidthHasChanged: boolean = this.pageWidth !== Marquee.getPageWidth();
+
+            if (pageWidthHasChanged) {
+                this.setupRuntimeVariables();
             }
-
-            const stopAnimation: () => void = (): void => {
-                this.setState({ animationClassName: '' });
-            };
-
-            stopAnimation();
-            this.setupRuntimeVariables();
-            this.startAnimation();
         };
 
         window.addEventListener('resize', this.resizeCallback);
