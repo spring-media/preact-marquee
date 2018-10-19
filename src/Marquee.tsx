@@ -95,16 +95,16 @@ export class Marquee extends Component<Props, State> {
 
     public render(): JSX.Element {
         const cssVariables: string = [
-            `--jsx-marquee--animation-function: ${this.props.animationFunction}`,
-            `--jsx-marquee--animation-delay: ${this.props.startAnimationAfterInSeconds}s`,
-            `--jsx-marquee--content-width: -${this.state.contentWidth}px`,
-            `--jsx-marquee--animation-time: ${this.state.animationTimeInSeconds}s`
+            `--preact-marquee--animation-function: ${this.props.animationFunction}`,
+            `--preact-marquee--animation-delay: ${this.props.startAnimationAfterInSeconds}s`,
+            `--preact-marquee--content-width: -${this.state.contentWidth}px`,
+            `--preact-marquee--animation-time: ${this.state.animationTimeInSeconds}s`
         ].join(';');
 
         return (
-            <div className={'jsx-marquee'} style={cssVariables} ref={this.saveMarqueeReference}>
+            <div className={'preact-marquee'} style={cssVariables} ref={this.saveMarqueeReference}>
                 <div
-                    className={`jsx-marquee__content ${this.state.animationClassName} ${
+                    className={`preact-marquee__content ${this.state.animationClassName} ${
                         this.state.pauseWhenHoveredClassName
                     }`}
                     ref={this.saveContentReference}
@@ -156,14 +156,14 @@ export class Marquee extends Component<Props, State> {
 
     private startAnimation(): void {
         this.setState({
-            animationClassName: 'jsx-marquee__content--is-animated'
+            animationClassName: 'preact-marquee__content--is-animated'
         });
     }
 
     private pauseWhenHovered(): void {
         if (this.props.pauseWhenHovered) {
             this.setState({
-                pauseWhenHoveredClassName: 'jsx-marquee__content--pause-when-hovered'
+                pauseWhenHoveredClassName: 'preact-marquee__content--pause-when-hovered'
             });
         }
     }
@@ -209,7 +209,7 @@ export class Marquee extends Component<Props, State> {
 
         for (let i: number = 0; i < copyCount; ++i) {
             content.push(
-                <div className={`jsx-marquee__content-item`} key={`content-row-${i}`}>
+                <div className={`preact-marquee__content-item`} key={`content-row-${i}`}>
                     {this.props.children}
                 </div>
             );

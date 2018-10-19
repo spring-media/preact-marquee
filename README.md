@@ -31,7 +31,7 @@ npm install preact-marquee --save
 
 ```jsx
 import { Component, h } from 'preact';
-import { Marquee } from './Marquee';
+import { Marquee } from 'preact-marquee';
 import './App.css';
 
 class App extends Component {

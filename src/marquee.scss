@@ -1,21 +1,14 @@
 // # Marquee
 
-@mixin jsx-marquee--when-hovered() {
-    .jsx-marquee:hover & {
+@mixin preact-marquee--when-hovered() {
+    .preact-marquee:hover & {
         @content;
     }
 }
 
-@mixin jsx-marquee--center() {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
 // [1] HACK for Safari (iOS >= 10.3): Safari renders only the first item. This hack forces
 //     the browser to create a new layer which solves our problem with hidden items.
-.jsx-marquee {
+.preact-marquee {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
@@ -24,25 +17,25 @@
 }
 
 // ## Content
-.jsx-marquee__content {
+.preact-marquee__content {
     display: inline-block;
 }
 
 // ## Content
 // ### State: is animated
 // Variables are set on runtime in Marquee.tsx.
-.jsx-marquee__content--is-animated {
-    animation-name: jsx-marquee--animation;
-    animation-timing-function: var(--jsx-marquee--animation-function);
-    animation-duration: var(--jsx-marquee--animation-time);
-    animation-delay: var(--jsx-marquee--animation-delay);
+.preact-marquee__content--is-animated {
+    animation-name: preact-marquee--animation;
+    animation-timing-function: var(--preact-marquee--animation-function);
+    animation-duration: var(--preact-marquee--animation-time);
+    animation-delay: var(--preact-marquee--animation-delay);
     animation-iteration-count: infinite;
 }
 
 // ## Content
 // ### State: pause when hovered
-.jsx-marquee__content--pause-when-hovered {
-    @include jsx-marquee--when-hovered() {
+.preact-marquee__content--pause-when-hovered {
+    @include preact-marquee--when-hovered() {
         animation-play-state: paused;
     }
 }
@@ -51,18 +44,18 @@
 // @tag <div/>
 // [1] Give the browser a hint that we will change the transform value,
 //     so the browser can setup appropriate optimizations ahead of time before the element is actually changed.
-.jsx-marquee__content-item {
+.preact-marquee__content-item {
     display: inline-block;
     will-change: transform; // [1]
 }
 
 // [1] Variable is set on runtime in Marquee.tsx.
-@keyframes jsx-marquee--animation {
+@keyframes preact-marquee--animation {
     0% {
         transform: translateX(0);
     }
 
     100% {
-        transform: translateX(var(--jsx-marquee--content-width)); // [1]
+        transform: translateX(var(--preact-marquee--content-width)); // [1]
     }
 }
