@@ -106,7 +106,7 @@ export class Marquee extends Component<Props, State> {
                 <div
                     className={`preact-marquee__content ${this.state.animationClassName} ${
                         this.state.pauseWhenHoveredClassName
-                        }`}
+                    }`}
                     ref={this.saveContentReference}
                 >
                     {this.renderContent(this.state)}
@@ -136,10 +136,10 @@ export class Marquee extends Component<Props, State> {
     private breakpointSpeedFactor(): number {
         // tslint:disable-next-line:no-non-null-assertion
         const multiplier: BreakpointSpeedConfig = this.props.breakpointSpeedConfig
-                                                      .filter((breakpointSpeedConfig: BreakpointSpeedConfig) => {
-                                                          return Marquee.getPageWidth() > breakpointSpeedConfig.fromWidth;
-                                                      })
-                                                      .pop();
+            .filter((breakpointSpeedConfig: BreakpointSpeedConfig) => {
+                return Marquee.getPageWidth() > breakpointSpeedConfig.fromWidth;
+            })
+            .pop();
 
         return multiplier ? 1 / multiplier.speedMultiplier : 1;
     }
@@ -149,7 +149,7 @@ export class Marquee extends Component<Props, State> {
             animationTimeInSeconds: Math.ceil(
                 // tslint:disable-next-line:no-non-null-assertion
                 this.state.contentWidth /
-                (this.state.containerWidth / (this.props.durationInSeconds * this.breakpointSpeedFactor()))
+                    (this.state.containerWidth / (this.props.durationInSeconds * this.breakpointSpeedFactor()))
             )
         });
     }
@@ -157,6 +157,12 @@ export class Marquee extends Component<Props, State> {
     private startAnimation(): void {
         this.setState({
             animationClassName: 'preact-marquee__content--is-animated'
+        });
+    }
+
+    private stopAnimation(): void {
+        this.setState({
+            animationClassName: ''
         });
     }
 
@@ -173,11 +179,22 @@ export class Marquee extends Component<Props, State> {
             const pageWidthHasChanged: boolean = this.pageWidth !== Marquee.getPageWidth();
 
             if (pageWidthHasChanged) {
+                this.stopAnimation();
+
                 this.setupRuntimeVariables();
+
+                this.startAnimationAndForceReflow();
             }
         };
 
         window.addEventListener('resize', this.resizeCallback);
+    }
+
+    // This is to force a reflow which is necessary in order to transition styles when adding a class name.
+    private startAnimationAndForceReflow() {
+        setTimeout(() => {
+            this.startAnimation();
+        }, 0);
     }
 
     private measureContent(): void {
