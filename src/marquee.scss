@@ -9,6 +9,8 @@
 // [1] HACK for Safari (iOS >= 10.3): Safari renders only the first item. This hack forces
 //     the browser to create a new layer which solves our problem with hidden items.
 .preact-marquee {
+    display: flex;
+    align-items: center;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;

@@ -160,6 +160,12 @@ export class Marquee extends Component<Props, State> {
         });
     }
 
+    private stopAnimation(): void {
+        this.setState({
+            animationClassName: ''
+        });
+    }
+
     private pauseWhenHovered(): void {
         if (this.props.pauseWhenHovered) {
             this.setState({
@@ -170,21 +176,25 @@ export class Marquee extends Component<Props, State> {
 
     private measureRuntimeVariablesAgainIfWindowIsResized(): void {
         this.resizeCallback = (): void => {
-            const pageWidthHasNotChanged: boolean = this.pageWidth === Marquee.getPageWidth();
-            if (pageWidthHasNotChanged) {
-                return;
+            const pageWidthHasChanged: boolean = this.pageWidth !== Marquee.getPageWidth();
+
+            if (pageWidthHasChanged) {
+                this.stopAnimation();
+
+                this.setupRuntimeVariables();
+
+                this.startAnimationAndForceReflow();
             }
-
-            const stopAnimation: () => void = (): void => {
-                this.setState({ animationClassName: '' });
-            };
-
-            stopAnimation();
-            this.setupRuntimeVariables();
-            this.startAnimation();
         };
 
         window.addEventListener('resize', this.resizeCallback);
+    }
+
+    // This is to force a reflow which is necessary in order to transition styles when adding a class name.
+    private startAnimationAndForceReflow() {
+        setTimeout(() => {
+            this.startAnimation();
+        }, 0);
     }
 
     private measureContent(): void {

@@ -1,6 +1,6 @@
 {
   "name": "preact-marquee",
-  "version": "1.3.1",
+  "version": "1.4.1",
   "description": "A <marquee> component for Preact.",
   "author": "Adrian Ramin <adrian.ramin@gmail.com>",
   "main": "dist/Marquee.js",
