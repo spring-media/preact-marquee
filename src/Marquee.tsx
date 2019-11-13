@@ -104,9 +104,7 @@ export class Marquee extends Component<Props, State> {
         return (
             <div className={'preact-marquee'} style={cssVariables} ref={this.saveMarqueeReference}>
                 <div
-                    className={`preact-marquee__content ${this.state.animationClassName} ${
-                        this.state.pauseWhenHoveredClassName
-                    }`}
+                    className={`preact-marquee__content ${this.state.animationClassName} ${this.state.pauseWhenHoveredClassName}`}
                     ref={this.saveContentReference}
                 >
                     {this.renderContent(this.state)}
