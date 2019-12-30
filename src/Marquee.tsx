@@ -72,14 +72,14 @@ export class Marquee extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.setState({
+        this.state = {
             copyCount: 2,
             pauseWhenHoveredClassName: '',
             animationClassName: '',
             animationTimeInSeconds: 0,
-            contentWidth: 0,
-            containerWidth: 0
-        });
+            contentWidth: 1,
+            containerWidth: 1
+        };
     }
 
     public componentDidMount(): void {
@@ -104,9 +104,7 @@ export class Marquee extends Component<Props, State> {
         return (
             <div className={'preact-marquee'} style={cssVariables} ref={this.saveMarqueeReference}>
                 <div
-                    className={`preact-marquee__content ${this.state.animationClassName} ${
-                        this.state.pauseWhenHoveredClassName
-                    }`}
+                    className={`preact-marquee__content ${this.state.animationClassName} ${this.state.pauseWhenHoveredClassName}`}
                     ref={this.saveContentReference}
                 >
                     {this.renderContent(this.state)}
@@ -145,32 +143,47 @@ export class Marquee extends Component<Props, State> {
     }
 
     private calculateAnimationTime(): void {
-        this.setState({
-            animationTimeInSeconds: Math.ceil(
-                // tslint:disable-next-line:no-non-null-assertion
-                this.state.contentWidth /
-                    (this.state.containerWidth / (this.props.durationInSeconds * this.breakpointSpeedFactor()))
-            )
-        });
+        this.setState(
+            (): Partial<State> => {
+                return {
+                    animationTimeInSeconds: Math.ceil(
+                        this.state.contentWidth /
+                            (this.state.containerWidth / (this.props.durationInSeconds * this.breakpointSpeedFactor()))
+                    )
+                };
+            }
+        );
     }
 
     private startAnimation(): void {
-        this.setState({
-            animationClassName: 'preact-marquee__content--is-animated'
-        });
+        this.setState(
+            (): Partial<State> => {
+                return {
+                    animationClassName: 'preact-marquee__content--is-animated'
+                };
+            }
+        );
     }
 
     private stopAnimation(): void {
-        this.setState({
-            animationClassName: ''
-        });
+        this.setState(
+            (): Partial<State> => {
+                return {
+                    animationClassName: ''
+                };
+            }
+        );
     }
 
     private pauseWhenHovered(): void {
         if (this.props.pauseWhenHovered) {
-            this.setState({
-                pauseWhenHoveredClassName: 'preact-marquee__content--pause-when-hovered'
-            });
+            this.setState(
+                (): Partial<State> => {
+                    return {
+                        pauseWhenHoveredClassName: 'preact-marquee__content--pause-when-hovered'
+                    };
+                }
+            );
         }
     }
 
@@ -180,9 +193,7 @@ export class Marquee extends Component<Props, State> {
 
             if (pageWidthHasChanged) {
                 this.stopAnimation();
-
                 this.setupRuntimeVariables();
-
                 this.startAnimationAndForceReflow();
             }
         };
@@ -206,11 +217,15 @@ export class Marquee extends Component<Props, State> {
         if (hasSizeOfContentChanged) {
             const copyCount: number = Math.ceil(containerWidth / contentWidth) + 1;
 
-            this.setState({
-                copyCount: copyCount,
-                contentWidth: contentWidth,
-                containerWidth: containerWidth
-            });
+            this.setState(
+                (): Partial<State> => {
+                    return {
+                        copyCount: copyCount,
+                        contentWidth: contentWidth,
+                        containerWidth: containerWidth
+                    };
+                }
+            );
         }
     }
 
