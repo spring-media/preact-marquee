@@ -159,16 +159,6 @@ export class Marquee extends Component<Props, State> {
         );
     }
 
-    private stopAnimation(): void {
-        this.setState(
-            (): Partial<State> => {
-                return {
-                    animationClassName: ''
-                };
-            }
-        );
-    }
-
     private pauseWhenHovered(): void {
         if (this.props.pauseWhenHovered) {
             this.setState(
@@ -183,19 +173,10 @@ export class Marquee extends Component<Props, State> {
 
     private measureRuntimeVariablesAgainIfWindowIsResized(): void {
         this.resizeCallback = new window.ResizeObserver(() => {
-            this.stopAnimation();
             this.setupRuntimeVariables();
-            this.startAnimationAndForceReflow();
         });
 
         this.resizeCallback.observe(this.marqueeElement);
-    }
-
-    // This is to force a reflow which is necessary in order to transition styles when adding a class name.
-    private startAnimationAndForceReflow(): void {
-        setTimeout(() => {
-            this.startAnimation();
-        });
     }
 
     private measureContent(): void {
