@@ -21,7 +21,7 @@ export class DimensionsHelper {
         this.originalInnerHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'innerHeight');
     }
 
-    private static setAllProperties(config: Record<string, number | PropertyDescriptor | undefined>) {
+    private static setAllProperties(config: Record<string, number | PropertyDescriptor | undefined>): void {
         Object.keys(config).forEach((propertyName) => {
             if (config[propertyName] !== undefined) {
                 Object.defineProperty(HTMLElement.prototype, propertyName, {
@@ -32,7 +32,7 @@ export class DimensionsHelper {
         });
     }
 
-    public simulateValues(props: DimensionsHelperValues) {
+    public simulateValues(props: DimensionsHelperValues): void {
         const { offsetWidth, offsetHeight, innerWidth, innerHeight } = props;
 
         DimensionsHelper.setAllProperties({
