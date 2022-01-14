@@ -1,4 +1,4 @@
-import { Component, h } from 'preact';
+import { Component, h, JSX } from 'preact';
 import './marquee.scss';
 
 export interface Props {
@@ -56,8 +56,7 @@ export class Marquee extends Component<Props, State> {
 
     private marqueeElement: HTMLElement;
     private contentElement: HTMLElement;
-    private resizeCallback: () => void;
-    private pageWidth: number;
+    private resizeCallback: ResizeObserver;
 
     private static getPageWidth(): number {
         return Math.max(
@@ -90,7 +89,7 @@ export class Marquee extends Component<Props, State> {
     }
 
     public componentWillUnmount(): void {
-        window.removeEventListener('resize', this.resizeCallback);
+        this.resizeCallback.disconnect();
     }
 
     public render(): JSX.Element {
@@ -106,6 +105,7 @@ export class Marquee extends Component<Props, State> {
                 <div
                     className={`preact-marquee__content ${this.state.animationClassName} ${this.state.pauseWhenHoveredClassName}`}
                     ref={this.saveContentReference}
+                    data-testid="content"
                 >
                     {this.renderContent(this.state)}
                 </div>
@@ -124,15 +124,9 @@ export class Marquee extends Component<Props, State> {
     private setupRuntimeVariables(): void {
         this.measureContent();
         this.calculateAnimationTime();
-        this.setPageWidth();
-    }
-
-    private setPageWidth(): void {
-        this.pageWidth = Marquee.getPageWidth();
     }
 
     private breakpointSpeedFactor(): number {
-        // tslint:disable-next-line:no-non-null-assertion
         const multiplier: BreakpointSpeedConfig = this.props.breakpointSpeedConfig
             .filter((breakpointSpeedConfig: BreakpointSpeedConfig) => {
                 return Marquee.getPageWidth() > breakpointSpeedConfig.fromWidth;
@@ -165,16 +159,6 @@ export class Marquee extends Component<Props, State> {
         );
     }
 
-    private stopAnimation(): void {
-        this.setState(
-            (): Partial<State> => {
-                return {
-                    animationClassName: ''
-                };
-            }
-        );
-    }
-
     private pauseWhenHovered(): void {
         if (this.props.pauseWhenHovered) {
             this.setState(
@@ -188,24 +172,11 @@ export class Marquee extends Component<Props, State> {
     }
 
     private measureRuntimeVariablesAgainIfWindowIsResized(): void {
-        this.resizeCallback = (): void => {
-            const pageWidthHasChanged: boolean = this.pageWidth !== Marquee.getPageWidth();
+        this.resizeCallback = new window.ResizeObserver(() => {
+            this.setupRuntimeVariables();
+        });
 
-            if (pageWidthHasChanged) {
-                this.stopAnimation();
-                this.setupRuntimeVariables();
-                this.startAnimationAndForceReflow();
-            }
-        };
-
-        window.addEventListener('resize', this.resizeCallback);
-    }
-
-    // This is to force a reflow which is necessary in order to transition styles when adding a class name.
-    private startAnimationAndForceReflow() {
-        setTimeout(() => {
-            this.startAnimation();
-        }, 0);
+        this.resizeCallback.observe(this.marqueeElement);
     }
 
     private measureContent(): void {

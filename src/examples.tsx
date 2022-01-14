@@ -1,4 +1,4 @@
-import { h, render } from 'preact';
+import { h, JSX, render } from 'preact';
 import { Marquee } from './Marquee';
 
 const children = createChildren(10);

@@ -1,8 +1,6 @@
 # preact-marquee
 
 ![npm version](https://img.shields.io/npm/v/preact-marquee.svg)
-![dependencies](https://img.shields.io/david/spring-media/preact-marquee.svg)
-![dev dependencies](https://img.shields.io/david/dev/spring-media/preact-marquee.svg)
 ![License](https://img.shields.io/npm/l/preact-marquee.svg)
 
 Preact-Marquee is a marquee component for [Preact](https://preactjs.com/).
@@ -17,7 +15,7 @@ A marquee is generally some content that floats from one side of the screen to t
 
 ## Getting Started
 
-Install it via yarn or npm:
+Install it via Yarn or npm:
 
 ```shell
 yarn add preact-marquee --save
@@ -26,8 +24,9 @@ yarn add preact-marquee --save
 ```shell
 npm install preact-marquee --save
 ```
+> :warning: `preact-marquee` has a peer dependency on Preact X, which means you need to install Preact X separately.
 
-## Example
+## Usage
 
 ```jsx
 import { Component, h } from 'preact';

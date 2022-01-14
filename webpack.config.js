@@ -1,12 +1,21 @@
-const path                 = require('path');
-const webpack              = require('webpack');
-const HtmlWebpackPlugin    = require('html-webpack-plugin');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const loaders              = require('./webpack/loaders');
-const UglifyJsPlugin       = require('uglifyjs-webpack-plugin');
-const StyleLintPlugin      = require('stylelint-webpack-plugin');
+const loaders = require('./webpack/loaders');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
+
+const IS_PROD = process.env.NODE_ENV === 'production';
 
 const basePlugins = [
+    new StyleLintPlugin({
+        configFile: './.stylelintrc',
+        files: 'src/**/*.scss',
+        syntax: 'scss'
+    })
+];
+
+const devPlugins = [
     new HtmlWebpackPlugin({
         template: './public/index.html',
         inject: 'body',
@@ -14,12 +23,6 @@ const basePlugins = [
             'examples'
         ]
     }),
-
-    new StyleLintPlugin({
-        configFile: './.stylelintrc',
-        files: 'src/**/*.scss',
-        syntax: 'scss'
-    })
 ];
 
 const prodPlugins = [
@@ -30,7 +33,7 @@ const prodPlugins = [
 ];
 
 const plugins = basePlugins
-    .concat(process.env.NODE_ENV === 'production' ? prodPlugins : []);
+    .concat(IS_PROD ? prodPlugins : devPlugins);
 
 const outputPath = path.join(__dirname, 'dist');
 
@@ -39,7 +42,7 @@ module.exports = {
     mode: process.env.NODE_ENV,
 
     entry: {
-        examples: './src/examples.tsx',
+        ...(!IS_PROD ? { examples: './src/examples.tsx' } : {}),
         Marquee: './src/Marquee.tsx'
     },
 
@@ -66,9 +69,7 @@ module.exports = {
     plugins: plugins,
 
     optimization: {
-        minimizer: process.env.NODE_ENV === 'production' ? [
-            new UglifyJsPlugin()
-        ] : [],
+        minimizer: IS_PROD ? [new UglifyJsPlugin()] : [],
         noEmitOnErrors: true
     },
 
@@ -77,10 +78,19 @@ module.exports = {
         maxAssetSize: 400000
     },
 
+    externals: [IS_PROD ? 'preact' : ''],
+
     module: {
         rules: [
             loaders.tslint,
-            loaders.tsx,
+            {
+                ...loaders.tsx,
+                ...(IS_PROD ? {
+                    options: {
+                        configFile: '../tsconfig.build.json'
+                    }
+                } : {})
+            },
             loaders.html,
             loaders.scss
         ]

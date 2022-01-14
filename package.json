@@ -16,28 +16,27 @@
     "prebuild": "npm run clean:dist",
     "prettier": "prettier  --write 'src/**/*.{tsx,scss}'",
     "start": "webpack-dev-server -d --inline --hot --progress --no-info --open",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "test:coverage": "npm run test -- --collect-coverage"
   },
   "devDependencies": {
-    "@types/enzyme": "3.10.3",
+    "@testing-library/preact": "2.0.1",
     "@types/jest": "24.0.23",
-    "@types/react": "16.9.11",
+    "@types/resize-observer-browser": "0.1.5",
     "cross-env": "6.0.3",
     "css-loader": "3.2.0",
     "cssnano": "4.1.10",
-    "enzyme": "3.10.0",
-    "enzyme-adapter-preact-pure": "2.2.0",
     "file-loader": "4.2.0",
     "html-webpack-plugin": "3.2.0",
-    "identity-obj-proxy": "3.0.0",
     "img-loader": "3.0.1",
-    "jest": "24.9.0",
+    "jest": "27.4.7",
     "lodash-ts-imports-loader": "1.2.0",
     "node-sass": "4.13.0",
     "postcss-cssnext": "3.1.0",
     "postcss-import": "12.0.1",
     "postcss-loader": "3.0.0",
     "pre-commit": "1.2.2",
+    "preact": "10.6.4",
     "prettier": "1.19.1",
     "raw-loader": "3.1.0",
     "rimraf": "3.0.0",
@@ -46,13 +45,13 @@
     "stylelint": "11.1.1",
     "stylelint-config-standard": "19.0.0",
     "stylelint-webpack-plugin": "1.0.4",
-    "ts-jest": "24.1.0",
+    "ts-jest": "27.1.2",
     "ts-loader": "6.2.1",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-loader": "3.6.0",
     "tslint-react": "4.1.0",
-    "typescript": "3.7.2",
+    "typescript": "3.8.3",
     "uglifyjs-webpack-plugin": "2.2.0",
     "url-loader": "2.2.0",
     "webpack": "4.41.2",
@@ -60,33 +59,13 @@
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.9.0"
   },
-  "dependencies": {
-    "preact": "10.0.5"
+  "peerDependencies": {
+    "preact": "10.6.4"
   },
   "prettier": {
     "printWidth": 120,
     "tabWidth": 4,
     "singleQuote": true
-  },
-  "jest": {
-    "transform": {
-      "\\.ts(x?)$": "ts-jest"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)spec)\\.tsx?$",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ],
-    "moduleNameMapper": {
-      "\\.scss$": "identity-obj-proxy"
-    }
   },
   "pre-commit": [
     "prettier"
